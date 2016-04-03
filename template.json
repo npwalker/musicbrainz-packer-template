@@ -1,4 +1,9 @@
 {
+    "variables": {
+        "aws_access_key": "{{env `AWS_ACCESS_KEY`}}",
+        "aws_secret_key": "{{env `AWS_SECRET_KEY`}}"
+    },
+
     "builders": [
         {
             "type": "virtualbox-ovf",
@@ -17,6 +22,8 @@
         {
             "type": "amazon-import",
             "region": "us-west-2",
+            "access_key": "{{user `aws_access_key`}}",
+            "secret_key": "{{user `aws_secret_key`}}",
             "s3_bucket_name": "npwalker-packer-importbucket",
             "tags": {
                 "Description": "packer amazon-import {{timestamp}}"
