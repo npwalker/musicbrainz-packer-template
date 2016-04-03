@@ -1,0 +1,26 @@
+{
+    "builders": [
+        {
+            "type": "virtualbox-ovf",
+            "source_path": "musicbrainz-server-2015-08-06.ova",
+            "ssh_username": "vm",
+            "ssh_password": "musicbrainz",
+            "shutdown_command": "echo 'packer' | sudo -S shutdown -P now",
+            "format": "ova"
+        }
+    ],
+    "post-processors": [
+        {
+            "type": "vagrant",
+            "keep_input_artifact": true 
+        },
+        {
+            "type": "amazon-import",
+            "region": "us-west-2",
+            "s3_bucket_name": "npwalker-packer-importbucket",
+            "tags": {
+                "Description": "packer amazon-import {{timestamp}}"
+            }
+        }
+    ]
+}
