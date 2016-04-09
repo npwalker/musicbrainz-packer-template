@@ -3,6 +3,15 @@
         "aws_access_key": "{{env `AWS_ACCESS_KEY`}}",
         "aws_secret_key": "{{env `AWS_SECRET_KEY`}}"
     },
+    "provisioners": [
+        {
+            "type": "shell",
+            "scripts": [
+                "scripts/drop_musicbrainz_database.sh",
+                "scripts/zerodisk.sh"
+            ]
+        }
+    ],
 
     "builders": [
         {
