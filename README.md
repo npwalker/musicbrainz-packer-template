@@ -1,3 +1,13 @@
+#How Do I Use it?
+
+Create variables.json with your ec2 credentials in it.
+
+```
+packer build -var-file=variables.json template_step_1.json;
+packer build -var-file=variables.json template_step_2.json;
+packer build -var-file=variables.json template_step_3.json;
+```
+
 # Why?  
 
 I wanted to spin up a musicbrainz server on ec2 but I didn't want to setup musicbrainz from source code. 
