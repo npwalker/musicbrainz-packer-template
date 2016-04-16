@@ -3,20 +3,11 @@
         "aws_access_key": "{{env `AWS_ACCESS_KEY`}}",
         "aws_secret_key": "{{env `AWS_SECRET_KEY`}}"
     },
-    "provisioners": [
-        {
-            "type": "shell",
-            "scripts": [
-                "scripts/drop_musicbrainz_database.sh",
-                "scripts/zerodisk.sh"
-            ]
-        }
-    ],
 
     "builders": [
         {
             "type": "virtualbox-ovf",
-            "source_path": "musicbrainz-server-2015-08-06.ova",
+            "source_path": "output-musicbrainz-step-2/packer-musicbrainz-step-2.ova",
             "ssh_username": "vm",
             "ssh_password": "musicbrainz",
             "shutdown_command": "echo 'packer' | sudo -S shutdown -P now",
@@ -26,7 +17,7 @@
     "post-processors": [
         {
             "type": "vagrant",
-            "keep_input_artifact": true 
+            "keep_input_artifact": true
         },
         {
             "type": "amazon-import",

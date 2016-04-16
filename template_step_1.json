@@ -1,0 +1,28 @@
+{
+    "variables": {
+        "musicbrainz_source_ova": "musicbrainz-server-2015-08-06.ova"
+    },
+    "provisioners": [
+        {
+            "type": "shell",
+            "scripts": [
+                "scripts/drop_musicbrainz_database.sh",
+                "scripts/update_os.sh",
+                "scripts/zerodisk.sh"
+            ]
+        }
+    ],
+
+    "builders": [
+        {
+            "type": "virtualbox-ovf",
+            "source_path": "{{user `musicbrainz_source_ova`}}", 
+            "ssh_username": "vm",
+            "ssh_password": "musicbrainz",
+            "shutdown_command": "echo 'packer' | sudo -S shutdown -P now",
+            "format": "ova",
+            "output_directory": "output-musicbrainz-step-1",
+            "vm_name": "packer-musicbrainz-step-1"
+        }
+    ]
+}

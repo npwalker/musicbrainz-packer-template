@@ -1,0 +1,37 @@
+{
+    "variables": {
+        "aws_access_key": "{{env `AWS_ACCESS_KEY`}}",
+        "aws_secret_key": "{{env `AWS_SECRET_KEY`}}"
+    },
+    "provisioners": [
+        {
+            "type": "shell",
+            "scripts": [
+                "scripts/mount_second_drive.sh",
+                "scripts/create_database_from_dumps.sh",
+                "scripts/zerodisk.sh"
+            ]
+        }
+    ],
+    "builders": [
+        {
+            "type": "virtualbox-ovf",
+            "source_path": "output-musicbrainz-step-1/packer-musicbrainz-step-1.ova", 
+            "ssh_username": "vm",
+            "ssh_password": "musicbrainz",
+            "shutdown_command": "echo 'packer' | sudo -S shutdown -P now",
+            "format": "ova",
+            "vboxmanage": [
+                ["modifyvm", "{{.Name}}", "--memory", "8192"],
+                ["modifyvm", "{{.Name}}", "--cpus", "4"],
+                [ "createhd", "--format", "VMDK", "--filename", "disk2.vmdk", "--size", "81920" ],
+                [ "storageattach", "{{.Name}}", "--storagectl", "SATAController", "--port", "2", "--type", "hdd", "--medium", "disk2.vmdk" ]
+            ],
+            "vboxmanage_post": [ 
+                [ "storageattach", "{{.Name}}", "--storagectl", "SATAController", "--port", "2", "--type", "hdd", "--medium", "none" ] 
+            ],
+            "output_directory": "output-musicbrainz-step-2",
+            "vm_name": "packer-musicbrainz-step-2"
+        }
+    ]
+}
